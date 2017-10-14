@@ -21,6 +21,8 @@ class MotorServerProtocol:
         index = int(v[0])
         value = float(v[1])
 
+
+        #print("%d -> %f(%f)", index, value, abs(value))
         if index >= 0 and index < len(self.motors):
             self.motors[index].move(value)
 
@@ -29,10 +31,10 @@ class MotorServerProtocol:
 if __name__ == "__main__":
     wiringpi.wiringPiSetupGpio() 
     wiringpi.pwmSetMode( wiringpi.GPIO.PWM_MODE_MS )
-    motor1 = Motor(22, 23)
-    motor2 = Motor(24, 25)
+    motor1 = Motor(25, 24)
+    motor2 = Motor(23, 22)
 
-    process = subprocess.Popen("raspivid -n -ih -t 0 -rot 0 -w 1280 -h 720 -fps 15 -b 1000000 -o - | nc -lkv4 5001",
+    process = subprocess.Popen("raspivid -n -ih -vf -hf -t 0 -rot 0 -w 1280 -h 720 -fps 15 -b 1000000 -o - | nc -lkv4 5001",
         shell=True)
 
     loop = asyncio.get_event_loop()
